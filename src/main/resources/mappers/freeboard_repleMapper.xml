@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.classy.daily.dao.Freeboard_RepleMapper">
+
+
+<!-- 자유게시판 댓글 작성 (insert) -->
+<insert id="insertReple" parameterType="fb_reple">
+INSERT INTO FB_REPLE(
+	fb_reple_num
+	, fb_boardnum
+	, user_id
+	, fb_reple_content
+)VALUES(
+	fb_reple_seq.NEXTVAL
+	, #{fb_boardnum}
+	, #{user_id}
+	, #{fb_reple_content}
+)
+</insert>
+
+
+<!-- 자유게시판 모든 댓글 가져오기 (SELECT) -->
+<select id="selectAllReple" parameterType="int" resultType="fb_reple">
+SELECT
+	fb_reple_num
+	, fb_boardnum
+	, user_id
+	, fb_reple_content
+	, TO_CHAR(fb_reple_regdate, 'YYYY/MM/DD HH24:MI') AS fb_reple_regdate
+FROM 
+	FB_REPLE
+WHERE
+	fb_boardnum = #{fb_boardnum}
+ORDER BY
+	fb_reple_num DESC
+</select>
+
+
+<!-- freeboard_replynum을 토대로 자유게시판 댓글 하나 수정하기 (SELECT) -->
+<update id="updateReple" parameterType="fb_reple">
+UPDATE
+	FB_REPLE
+SET
+	fb_reple_content = #{fb_reple_content}
+	, fb_reple_regdate = SYSDATE
+WHERE
+	fb_reple_num = #{fb_reple_num}
+AND
+	(user_id = #{user_id} OR #{user_state} = 3)
+</update>
+
+
+<!-- freeboard_replynum을 토대로 자유게시판 댓글 하나 삭제하기 (DELETE) -->
+<delete id="deleteReple" parameterType="fb_reple">
+DELETE FROM
+	FB_REPLE
+WHERE
+	fb_reple_num = #{fb_reple_num}
+AND
+	(user_id = #{user_id} OR #{user_state} = 3)
+</delete>
+
+
+
+
+
+</mapper>

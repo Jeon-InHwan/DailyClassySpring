@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.classy.daily.dao.MemberMapper">
+
+
+<!-- 회원가입 (insert) -->
+<insert id="join" parameterType="member">
+INSERT INTO member_tb (
+	user_id
+	, user_pw
+	, user_name
+) VALUES (
+	#{user_id}
+	, #{user_pw}
+	, #{user_name}
+)
+</insert>
+
+
+<!-- 가입된 회원인지 확인하기 위해, 한 회원의 정보만을 DB에서 가져오기 -->
+<select id="selectMember" parameterType="string" resultType="member">
+SELECT
+	user_id
+	, user_pw
+	, user_name
+	, TO_CHAR(user_regdate, 'yyyy-MM-dd') AS user_regdate
+	, user_state
+	, link_hits
+FROM
+	member_tb
+WHERE
+	user_id = #{user_id}
+</select>
+
+
+<!-- 실제 회원정보 업데이트 요청 -->
+<update id="updateMember" parameterType="member">
+UPDATE
+	member_tb
+SET
+	user_pw = #{user_pw}
+	, user_name = #{user_name}
+WHERE
+	user_id = #{user_id}
+</update>
+
+
+<!-- 실제 회원탈퇴 요청 : 사실 user_state 항목을 -1으로 바꾸는 물리적 삭제  -->
+<update id="deleteMember" parameterType="string">
+UPDATE
+	member_tb
+SET
+	user_state = -1
+WHERE
+	user_id = #{user_id}
+</update>
+
+
+
+<!-- LINK_HITS 업데이트 요청 -->
+<update id="updateLinkHits" parameterType="member">
+UPDATE
+	member_tb
+SET
+	link_hits = link_hits + 1 
+WHERE
+	user_id = #{user_id}
+AND
+	user_id != #{user_name}
+</update>
+
+
+<!-- 가입된 회원인지 확인하기 위해, 한 회원의 정보만을 DB에서 가져오기 -->
+<select id="getLinkHits" parameterType="string" resultType="int">
+SELECT
+	link_hits
+FROM
+	member_tb
+WHERE
+	user_id = #{user_id}
+</select>
+
+
+<!-- 사용자의 user_state 업데이트 -->
+<update id="updateUserState" parameterType="string">
+UPDATE
+	member_tb
+SET
+	user_state = 1 
+WHERE
+	user_id = #{user_id}
+</update>
+
+
+<!-- paging 처리를 하기 위해 전체 회원 수를 DB에서 조회해오기 -->
+<select id="selectTotalCount" parameterType="map" resultType="int">
+SELECT
+	COUNT(*)
+FROM
+	member_tb
+WHERE
+	<choose>
+		<when test="searchItem == 'user_id'">user_id</when>
+		<when test="searchItem == 'user_name'">user_name</when>
+	</choose>
+	LIKE '%' || #{searchWord} || '%'
+AND
+	<choose>
+		<when test="searchStatus == 'all'">user_state in(-1, 0, 1)</when>
+		<when test="searchStatus == -1">user_state = -1</when>
+		<when test="searchStatus == 0">user_state = 0</when>
+		<when test="searchStatus == 1">user_state = 1</when>
+	</choose>
+</select>
+
+
+<!-- 관리자에 의한 Member 목록 요청 -->
+<select id="listMembers" parameterType="map" resultType="member">
+SELECT
+	user_id
+	, user_pw
+	, user_name
+	, user_state
+	, TO_CHAR(user_regdate, 'yyyy-MM-dd') AS user_regdate
+	, link_hits
+FROM
+	member_tb
+WHERE
+	<choose>
+		<when test="searchItem == 'user_id'">user_id</when>
+		<when test="searchItem == 'user_name'">user_name</when>
+	</choose>
+	LIKE '%' || #{searchWord} || '%'
+AND
+	<choose>
+		<when test="searchStatus == 'all'">user_state in(-1, 0, 1)</when>
+		<when test="searchStatus == -1">user_state = -1</when>
+		<when test="searchStatus == 0">user_state = 0</when>
+		<when test="searchStatus == 1">user_state = 1</when>
+	</choose>
+ORDER BY
+	user_id
+</select>
+
+
+<!-- 사용자 계정 활성화 -->
+<update id="deactivation" parameterType="string">
+UPDATE
+	member_tb
+SET
+	user_state = -1
+WHERE
+	user_id = #{user_id}
+</update>
+
+
+<!-- 사용자 계정 활성화 -->
+<update id="activation" parameterType="string">
+UPDATE
+	member_tb
+SET
+	user_state = 0
+WHERE
+	user_id = #{user_id}
+</update>
+
+
+<!-- 사용자 계정 파트너 승격 -->
+<update id="elevation" parameterType="string">
+UPDATE
+	member_tb
+SET
+	user_state = 1
+WHERE
+	user_id = #{user_id}
+</update>
+
+
+<!-- 사용자 계정 파트너 강등 -->
+<update id="demotion" parameterType="string">
+UPDATE
+	member_tb
+SET
+	user_state = 0
+WHERE
+	user_id = #{user_id}
+</update>
+
+
+</mapper>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.classy.daily.dao.LookBookMapper">
+
+
+<!-- lookbook 게시글 작성 (insert) -->
+<insert id="writeLookBook" parameterType="lookbook">
+	<selectKey keyProperty="lb_boardnum"  resultType="int" order="BEFORE">
+			SELECT
+				lb_seq.nextval
+			FROM
+				dual
+	</selectKey>
+	INSERT INTO
+		LOOKBOOK_BOARD(
+			lb_boardnum
+			, user_id
+			, lb_title
+			, lb_content
+		) VALUES (
+			#{lb_boardnum}
+			, #{user_id}
+			, #{lb_title}
+			, #{lb_content}
+		)
+</insert>
+
+
+<!-- lookbook 게시글 TAG INSERT -->
+<insert id="tagInsert" parameterType="lookbook">
+	INSERT INTO
+		TAG_TB(
+			tag_num 
+			, lb_boardnum
+			, tag
+		)
+		select
+			tag_seq.nextval
+			, A.* from (
+	<foreach collection="tag" item="arr" separator="UNION ALL">
+		select
+			#{lb_boardnum} as lb_boardnum
+			, #{arr} as tag
+		from
+			dual			
+	</foreach>
+		) A
+</insert>
+
+
+<!-- lookbook 게시글 Link INSERT -->
+<insert id="linkInsert" parameterType="lookbook">
+	INSERT INTO
+		LINK_TB(
+			link_num 
+			, lb_boardnum
+			, link_add
+		)
+		select
+			link_seq.nextval
+			, A.* from (
+	<foreach collection="link_add" item="arr" separator="UNION ALL">
+		select
+			#{lb_boardnum} as lb_boardnum
+			, #{arr} as link_add
+		from
+			dual			
+	</foreach>
+		) A
+</insert>
+
+
+<!-- lookbook 사진 INSERT -->
+<insert id="picInsert" parameterType="list">
+	<selectKey keyProperty="lb_boardnum2"  resultType="int" order="BEFORE">
+			SELECT
+				lb_seq2.nextval
+			FROM
+				dual
+	</selectKey>
+	INSERT INTO
+		PIC_TB(
+			pic_num 
+			, lb_boardnum
+			, originalfile
+			, savedfile
+		)
+		SELECT
+			pic_seq.nextval
+			, #{lb_boardnum2}
+			, A.* from (
+	<foreach collection="list" item="item" separator="UNION ALL">
+		select
+			#{item.original} as originalfile
+			, #{item.saved} as savedfile
+		from
+			dual			
+	</foreach>
+		) A
+</insert>
+
+
+<!-- 룩북 게시판 전체 글 개수 세어오기 -->
+<select id="selectTotalCount" resultType="int">
+SELECT
+	COUNT(*)
+FROM
+	LOOKBOOK_BOARD
+WHERE
+	<choose>
+		<when test="searchItem == 'lb_title'">lb_title</when>
+		<when test="searchItem == 'user_id'">user_id</when>
+		<when test="searchItem == 'lb_content'">lb_content</when>
+	</choose>
+LIKE '%' || #{searchWord} || '%'
+</select>
+
+
+<!-- 룩북 게시판 글 목록 전부 가져오기 -->
+<select id="listLookBookboards" resultType="lookbook" parameterType="map">
+SELECT
+	lb_boardnum
+	, lb_title
+	, lb_content
+	, lb_likes
+	, lb_hitcount
+	, user_id
+	, TO_CHAR(lb_regdate, 'YYYY-MM-DD') AS lb_regdate
+FROM
+	LOOKBOOK_BOARD
+WHERE
+	<choose>
+		<when test="searchItem == 'lb_title'">lb_title</when>
+		<when test="searchItem == 'user_id'">user_id</when>
+		<when test="searchItem == 'lb_content'">lb_content</when>
+	</choose>
+	LIKE '%' || #{searchWord} || '%'
+ORDER BY
+	lb_boardnum DESC
+</select>
+
+
+<!-- 글 번호를 토대로 룩북 게시판 글 조회수 1 업데이트 -->
+<update id="updateHits" parameterType="int">
+UPDATE
+	LOOKBOOK_BOARD
+SET
+	lb_hitcount = lb_hitcount + 1
+WHERE
+	lb_boardnum = #{lb_boardnum}
+</update>
+
+
+<!-- 글 번호를 토대로 룩북 게시판 글 하나 가져오기 -->
+<select id="readLookBookboard" parameterType="int" resultType="lookbook">
+SELECT
+	lb_boardnum
+	, lb_title
+	, lb_content
+	, lb_likes
+	, lb_hitcount
+	, user_id
+	, TO_CHAR(lb_regdate, 'YYYY-MM-DD') AS lb_regdate
+FROM
+	LOOKBOOK_BOARD
+WHERE
+	lb_boardnum = #{lb_boardnum}
+</select>
+
+
+<!-- 글 번호를 토대로 해당 룩북 게시글 태그들 가져오기 -->
+<select id="readTag" parameterType="int" resultType="tag">
+SELECT
+	lb_boardnum
+	, tag_num
+	, tag
+FROM
+	TAG_TB
+WHERE
+	lb_boardnum = #{lb_boardnum}
+</select>
+
+
+<!-- 글 번호를 토대로 해당 룩북 게시글 링크들 가져오기 -->
+<select id="readLink" parameterType="int" resultType="link">
+SELECT
+	lb_boardnum
+	, link_num
+	, link_add
+FROM
+	LINK_TB
+WHERE
+	lb_boardnum = #{lb_boardnum}
+</select>
+
+
+<!-- 글 번호를 토대로 해당 룩북 게시글 사진들 가져오기 -->
+<select id="readPicture" parameterType="int" resultType="picture">
+SELECT
+	lb_boardnum
+	, pic_num
+	, originalfile
+	, savedfile
+FROM
+	PIC_TB
+WHERE
+	lb_boardnum = #{lb_boardnum}
+</select>
+
+
+<!-- 글 번호를 토대로 룩북 게시판 글 조회수 1 업데이트 -->
+<update id="recommendThis" parameterType="lookbook">
+UPDATE
+	LOOKBOOK_BOARD
+SET
+	lb_likes = lb_likes + 1
+WHERE
+	lb_boardnum = #{lb_boardnum}
+AND
+	user_id != #{user_id}
+</update>
+
+
+<!-- 룩북 게시판 특정 회원의 글 개수 세어오기 -->
+<select id="countLookBook" resultType="int" parameterType="string">
+SELECT
+	COUNT(*)
+FROM
+	LOOKBOOK_BOARD
+WHERE
+	user_id = #{user_id}
+</select>
+
+
+<!-- 인기글 가져오기 (추천수 기준) -->
+<select id="getPopular" resultType="lookbook">
+SELECT
+	lb_boardnum
+	, lb_title
+	, lb_content
+	, lb_likes
+	, lb_hitcount
+	, user_id
+	, TO_CHAR(lb_regdate, 'YYYY-MM-DD') AS lb_regdate
+FROM
+	LOOKBOOK_BOARD
+ORDER BY
+	lb_likes desc
+</select>
+
+
+<!-- 룩북 게시판 특정 글 삭제 -->
+<delete id="deleteLookBook" parameterType="lookbook">
+DELETE FROM
+	LOOKBOOK_BOARD
+WHERE
+	lb_boardnum = #{lb_boardnum}
+AND
+	(user_id = #{user_id} OR #{user_state} = 3)
+</delete>
+
+
+</mapper>

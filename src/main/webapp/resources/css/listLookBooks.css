@@ -1,0 +1,169 @@
+@charset "UTF-8";
+
+
+div#picture {
+	opacity: 0.8;
+  	display: block;
+  	position: fixed;
+  	top: 0;
+  	left: 0;
+  	height: 100vh;
+	width : 100vw;
+	background-image: url("/resources/images/backPic01.jpg");
+	background-size:cover;
+	z-index: -1;
+}	
+
+
+/* navbar css 부분 시작 */
+
+li#firstLi {
+	margin-left: 70px;
+}
+
+li {
+	margin-left: 30px;
+}
+
+
+#firstUl li {
+	width: 220px;
+	margin: 0 auto;
+}
+
+#firstUl li a.dropdown-item {
+	width: 220px;
+	margin: 0 auto;
+}
+
+#SecondUl li {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#SecondUl li a.dropdown-item {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#ThirdUl li {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#ThirdUl li a.dropdown-item {
+	width: 160px;
+	margin: 0 auto;
+}
+
+/* navbar css 부분 종료 */
+
+
+
+/* 로그인된 유저 표시 css 시작 부분 */
+
+#dropdownId {
+	position: absolute;
+	right: 0;
+	top: 8.5px;
+	z-index: 100;
+}
+
+#userUl li {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#userUl li a.dropdown-item {
+	width: 160px;
+	margin: 0 auto;
+}
+
+/* 로그인된 유저 표시 css 종료 부분 */
+
+
+
+#clock {
+	position: absolute;
+	right: 2px;
+	top: 57px;
+	font-size: 1.3em;
+	z-index: -1;
+}
+
+
+
+div#tableDiv {
+	width: 1000px;
+	margin-top: 10px;
+}
+
+div#tableWrapper {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+#lookbookTable {
+	width: 1000px;
+	margin-top: 15px;
+}
+
+
+#lookbookTable tr, th, td {
+	text-align: center;
+	column-width: 100%;
+	vertical-align: middle;
+}
+
+div#buttonDiv {
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+div#buttonDiv input {
+	margin-top: 35px;
+}
+
+.hiddenTd {
+	display: none;
+}
+
+
+
+/* 검색 부분 + 페이징 css 시작 부분 */
+
+#searchItem {
+	width: 130px;
+	margin-top: 10px;
+	text-align-last: center;
+	display: inline-block;
+}
+
+#searchDiv {
+	width: 500px;
+	margin-top: 70px;
+}
+
+
+#hilightCurrent {
+	font-weight: 900;
+}
+
+#pagenationNaV .pagination {
+	margin: 0 auto; 
+	margin-top: 25px;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+
+#pagenationNaV .pagination li {
+	margin: 0px;
+}
+
+#searchButton {
+	display: inline-block;
+	margin-bottom: 5px;
+}
+
+/* 검색 부분 + 페이징 css 종료 부분 */

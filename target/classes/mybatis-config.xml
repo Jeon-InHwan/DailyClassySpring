@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.classy.daily.vo.MemberVO" alias="member" />
+		<typeAlias type="com.classy.daily.vo.FreeboardVO" alias="freeboard" />
+		<typeAlias type="com.classy.daily.vo.Freeboard_RepleVO" alias="fb_reple" />
+		<typeAlias type="com.classy.daily.vo.LookBookVO" alias="lookbook" />
+		<typeAlias type="com.classy.daily.vo.TagVO" alias="tag" />
+		<typeAlias type="com.classy.daily.vo.LinkVO" alias="link" />
+		<typeAlias type="com.classy.daily.vo.PictureVO" alias="picture" />
+		<typeAlias type="com.classy.daily.vo.LookBook_RepleVO" alias="lb_reple" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="mappers/memberMapper.xml" />
+		<mapper resource="mappers/freeboardMapper.xml" />
+		<mapper resource="mappers/freeboard_repleMapper.xml" />
+		<mapper resource="mappers/lookbookMapper.xml" />
+		<mapper resource="mappers/lookbook_repleMapper.xml" />
+	</mappers>
+</configuration>

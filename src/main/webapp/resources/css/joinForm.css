@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+div#picture {
+	opacity: 0.8;
+  	display: block;
+  	position: fixed;
+  	top: 0;
+  	left: 0;
+  	height: 100vh;
+	width : 100vw;
+	background-image: url("/resources/images/backPic01.jpg");
+	background-size:cover;
+	z-index: -1;
+}
+
+#outWrapper {
+	width: 750px;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 220px;
+}
+
+
+#idSpan {
+	opacity: 0.7;
+	width: 100px;
+	font-weight: 500;
+}
+
+#passwordSpan{
+	opacity: 0.7;
+	width: 100px;
+	font-weight: 500;
+}
+
+#nameSpan {
+	opacity: 0.7;
+	width: 100px;
+	font-weight: 500;
+}
+
+
+input {
+	opacity: 0.7;
+}
+
+
+.form-check-input {
+	display: inline-block;
+}
+
+
+#joinButton {
+	width: 750px;
+	margin-top: 60px;
+	opacity: 0.8;
+	font-weight: 900px;
+	color: white;
+}
+
+#joinButtonDiv {
+	width: 750px;
+	margin: 0 auto;
+	margin-bottom: 50px;
+}

@@ -1,0 +1,170 @@
+@charset "UTF-8";
+
+
+div#picture {
+	opacity: 0.8;
+  	display: block;
+  	position: fixed;
+  	top: 0;
+  	left: 0;
+  	height: 100vh;
+	width : 100vw;
+	background-image: url("/resources/images/movie_01.jpg");
+	background-size:cover;
+	z-index: -1;
+}	
+
+
+/* navbar css 부분 시작 */
+
+li#firstLi {
+	margin-left: 220px;
+}
+
+li {
+	margin-left: 30px;
+}
+
+
+#firstUl li {
+	width: 220px;
+	margin: 0 auto;
+}
+
+#firstUl li a.dropdown-item {
+	width: 220px;
+	margin: 0 auto;
+}
+
+#SecondUl li {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#SecondUl li a.dropdown-item {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#ThirdUl li {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#ThirdUl li a.dropdown-item {
+	width: 160px;
+	margin: 0 auto;
+}
+
+
+/* navbar css 부분 종료 */
+
+
+
+/* 로그인된 유저 표시 css 시작 부분 */
+
+#dropdownId {
+	position: absolute;
+	right: 0;
+	top: 8.5px;
+	z-index: 100;
+}
+
+#userUl li {
+	width: 160px;
+	margin: 0 auto;
+}
+
+#userUl li a.dropdown-item {
+	width: 160px;
+	margin: 0 auto;
+}
+
+/* 로그인된 유저 표시 css 종료 부분 */
+
+
+#clock {
+	position: absolute;
+	right: 2px;
+	top: 57px;
+	font-size: 1.3em;
+	z-index: -1;
+}
+
+
+/* 테이블 관련 css 시작 부분 */
+
+div#tableDiv {
+	width: 1000px;
+	margin-top: 70px;
+}
+
+div#tableWrapper {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+
+#reviewTable {
+	width: 1000px;
+	vertical-align: middle;
+}
+
+
+#reviewTable tr, td {
+	text-align: left;
+	column-width: 100%;
+	vertical-align: middle;
+}
+
+#reviewTable tr th {
+	text-align: center;
+	column-width: 70px;
+	vertical-align: middle;
+}
+
+div#buttonDiv {
+	width: 1000px;
+	text-align: center;
+	margin: 0 auto;
+	margin-bottom: 50px;
+}
+
+div#buttonDiv input {
+	margin-top: 20px;
+	width: 600px;
+}
+
+
+#review_text {
+	height: 280px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+#contentTd {
+	padding-right: 23px;
+	padding-top: 24px;
+	padding-bottom: 24px;
+	
+}
+
+#fileTd {
+	padding-right: 23px;
+	padding-top: 24px;
+	padding-bottom: 24px;
+	
+}
+
+#review_title {
+	margin-top: 16px;
+	margin-right: 15px;
+}
+
+#idTh {
+	text-align: center;
+	width: 170px;
+}
+
+/* 테이블 관련 css 종료 부분 */
+

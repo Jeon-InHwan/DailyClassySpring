@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.classy.daily.dao.LookBook_RepleMapper">
+
+
+<!-- 자유게시판 댓글 작성 (insert) -->
+<insert id="insertLbReple" parameterType="lb_reple">
+INSERT INTO LB_REPLE(
+	lb_reple_num
+	, lb_boardnum
+	, user_id
+	, lb_reple_content
+)VALUES(
+	lb_reple_seq.NEXTVAL
+	, #{lb_boardnum}
+	, #{user_id}
+	, #{lb_reple_content}
+)
+</insert>
+
+
+<!-- 자유게시판 모든 댓글 가져오기 (SELECT) -->
+<select id="selectAllLbReple" parameterType="int" resultType="lb_reple">
+SELECT
+	lb_reple_num
+	, lb_boardnum
+	, user_id
+	, lb_reple_content
+	, TO_CHAR(lb_reple_regdate, 'YYYY/MM/DD HH24:MI') AS lb_reple_regdate
+FROM 
+	LB_REPLE
+WHERE
+	lb_boardnum = #{lb_boardnum}
+ORDER BY
+	lb_reple_num DESC
+</select>
+
+
+<!-- lookbook_replynum을 토대로 룩북게시판 댓글 하나 수정하기 (SELECT) -->
+<update id="updateLbReple" parameterType="lb_reple">
+UPDATE
+	LB_REPLE
+SET
+	lb_reple_content = #{lb_reple_content}
+	, lb_reple_regdate = SYSDATE
+WHERE
+	lb_reple_num = #{lb_reple_num}
+AND
+	(user_id = #{user_id} OR #{user_state} = 3)
+</update>
+
+
+<!-- flookbook_replynum을 토대로 룩북게시판 댓글 하나 삭제하기 (DELETE) -->
+<delete id="deleteLbReple" parameterType="lb_reple">
+DELETE FROM
+	LB_REPLE
+WHERE
+	lb_reple_num = #{lb_reple_num}
+AND
+	(user_id = #{user_id} OR #{user_state} = 3)
+</delete>
+
+
+<!-- Ajax를 활용한 댓글 개수 세어오기 -->
+<select id="countReple" parameterType="int" resultType="int">
+SELECT
+	COUNT(*)
+FROM
+	LB_REPLE
+WHERE
+	lb_boardnum = #{lb_boardnum}
+</select>
+
+
+
+
+</mapper>
